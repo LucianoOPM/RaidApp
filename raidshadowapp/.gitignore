@@ -1,0 +1,8 @@
+node_modules
+dist
+out
+*.log*
+build
+.env
+/prisma/*
+!/prisma/schema.prisma
