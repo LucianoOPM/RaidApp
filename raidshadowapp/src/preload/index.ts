@@ -1,8 +1,12 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { NewUser } from '../main/types/user.type'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  createUser: (data: NewUser): Promise<void> => ipcRenderer.invoke('createUser', data),
+  getUsers: (): Promise<void> => ipcRenderer.invoke('getUsers')
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

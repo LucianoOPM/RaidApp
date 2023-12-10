@@ -1,7 +1,10 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { userService } from './service/index.service'
+import UserController from './controller/user.controller'
+const userController = new UserController(userService)
 
 function createWindow(): void {
   // Create the browser window.
@@ -16,6 +19,8 @@ function createWindow(): void {
       sandbox: false
     }
   })
+
+  mainWindow.maximize()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -41,6 +46,8 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+  ipcMain.handle('createUser', userController.createUser)
+  ipcMain.handle('getUsers', userController.getUsers)
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
