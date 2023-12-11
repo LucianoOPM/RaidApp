@@ -1,6 +1,6 @@
 import UserDao from '../dao/user.dao'
 import UserDto from '../dto/user.dto'
-import { NewUser, Users } from '../types/user.type'
+import { NewUser, User, Users } from '../types/user.type'
 
 class UserService {
   private userDao: UserDao
@@ -27,6 +27,19 @@ class UserService {
       return users
     } catch (error) {
       throw new Error('No se pudo obtener los usuarios')
+    }
+  }
+
+  getUser = async (id: string): Promise<User> => {
+    try {
+      const user = await this.userDao.getById(+id)
+
+      if (!user) {
+        throw new Error('No se pudo obtener el usuario')
+      }
+      return user
+    } catch (error) {
+      throw new Error('No se pudo obtener el usuario')
     }
   }
 }

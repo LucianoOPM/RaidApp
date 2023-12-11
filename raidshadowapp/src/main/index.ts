@@ -48,6 +48,7 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
   ipcMain.handle('createUser', userController.createUser)
   ipcMain.handle('getUsers', userController.getUsers)
+  ipcMain.handle('getUser', userController.getUserById)
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
