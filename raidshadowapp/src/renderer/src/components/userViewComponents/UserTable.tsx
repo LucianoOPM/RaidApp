@@ -2,15 +2,7 @@ import { Users } from '@renderer/types/user.types'
 import { Link } from 'react-router-dom'
 import { useEffect, useState, FC } from 'react'
 import { ErrorResponse, SuccessResponse } from '@renderer/types/response.types'
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-  Button
-} from '@nextui-org/react'
+import { Card, Typography, Button } from '@material-tailwind/react'
 import MoreInfo from '@renderer/assets/MoreInfoIcon'
 
 interface UserTableProps {
@@ -44,39 +36,97 @@ const UserTable: FC<UserTableProps> = ({ wasRegistered }): JSX.Element => {
   return (
     <div className="flex justify-center">
       <div className="w-1/2 mt-20 font-bold">
-        <Table aria-label="Example static collection table">
-          <TableHeader>
-            <TableColumn>ID</TableColumn>
-            <TableColumn>Username</TableColumn>
-            <TableColumn>Fecha de registro</TableColumn>
-            <TableColumn>Puntuación del mes</TableColumn>
-            <TableColumn width={1}>Más información</TableColumn>
-          </TableHeader>
-          <TableBody>
-            {users.map((user) => {
-              return (
-                <TableRow key={user.idUser}>
-                  <TableCell>{user.idUser}</TableCell>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.register_date.toISOString().split('T')[0]}</TableCell>
-                  <TableCell>8</TableCell>
-                  <TableCell>
-                    <Link to={`/user/${user.idUser}`} state={user.idUser}>
-                      <Button
-                        isIconOnly
-                        color="warning"
-                        variant="light"
-                        aria-label="more information"
-                      >
-                        <MoreInfo />
-                      </Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
+        <Card className="h-full w-full" placeholder={''}>
+          <table className="w-full min-w-max table-auto text-left">
+            <thead>
+              <tr>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    placeholder={''}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    ID
+                  </Typography>
+                </th>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    placeholder={''}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    Username
+                  </Typography>
+                </th>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    placeholder={''}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    Fecha de registro
+                  </Typography>
+                </th>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    placeholder={''}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    Puntuación del mes
+                  </Typography>
+                </th>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    placeholder={''}
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    Más información
+                  </Typography>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => {
+                const isLast = users.length - 1 === index
+                const styles = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50'
+                return (
+                  <tr key={user.idUser}>
+                    <td className={styles}>
+                      <Typography placeholder={''}>{user.idUser}</Typography>
+                    </td>
+                    <td className={`${styles}  bg-blue-gray-50/50`}>
+                      <Typography placeholder={''}>{user.username}</Typography>
+                    </td>
+                    <td className={styles}>
+                      <Typography placeholder={''}>
+                        {user.register_date.toISOString().split('T')[0]}
+                      </Typography>
+                    </td>
+                    <td className={`${styles} bg-blue-gray-50/50`}>
+                      <Typography placeholder={''}>8</Typography>
+                    </td>
+                    <td className={styles}>
+                      <Typography placeholder={''}>
+                        <Link to={`/user/${user.idUser}`} state={user.idUser}>
+                          <Button placeholder={''}>
+                            <MoreInfo />
+                          </Button>
+                        </Link>
+                      </Typography>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </Card>
       </div>
     </div>
   )

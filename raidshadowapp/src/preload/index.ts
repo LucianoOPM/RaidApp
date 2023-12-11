@@ -5,7 +5,8 @@ import { NewUser } from '../main/types/user.type'
 // Custom APIs for renderer
 const api = {
   createUser: (data: NewUser): Promise<void> => ipcRenderer.invoke('createUser', data),
-  getUsers: (): Promise<void> => ipcRenderer.invoke('getUsers')
+  getUsers: (): Promise<void> => ipcRenderer.invoke('getUsers'),
+  getUser: (idUser: string): Promise<void> => ipcRenderer.invoke('getUser', idUser)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

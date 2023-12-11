@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState, FC } from 'react'
 import { NewUser } from '@renderer/types/user.types'
-import { Button } from '@nextui-org/react'
+import { Button } from '@material-tailwind/react'
 
 interface RegisterFormProps {
   registerHook: () => void
@@ -93,7 +93,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ registerHook }): JSX.Element => {
         </div>
       </div>
       <div className="text-center">
-        <Button className="mt-2" color="secondary" variant="ghost" onClick={handleRegister}>
+        <Button className="mt-2" placeholder={''} onClick={handleRegister}>
           Registrar
         </Button>
       </div>

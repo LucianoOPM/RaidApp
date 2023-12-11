@@ -1,7 +1,7 @@
 import { IpcMainInvokeEvent } from 'electron'
 import UserService from '../service/user.service'
 import { SuccessResponse, ErrorResponse } from '../types/response.type'
-import { NewUser } from '../types/user.type'
+import { NewUser, User } from '../types/user.type'
 
 class UserController {
   private service: UserService
@@ -40,6 +40,25 @@ class UserController {
       return {
         code: 404,
         error: 'No se pudieron obtener los usuarios'
+      }
+    }
+  }
+
+  getUserById = async (
+    _event: IpcMainInvokeEvent,
+    idUser: string
+  ): Promise<SuccessResponse | ErrorResponse> => {
+    try {
+      const user: User = await this.service.getUser(idUser)
+      return {
+        code: 200,
+        message: 'success',
+        payload: user
+      }
+    } catch (error) {
+      return {
+        code: 404,
+        error: 'No se pudo obtener el usuario'
       }
     }
   }

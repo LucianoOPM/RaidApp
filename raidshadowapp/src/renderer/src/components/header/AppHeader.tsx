@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-// import '../styles/registerForm.css'
+
 const NavHeader = (): JSX.Element => {
-  const [userActive, setUserActive] = useState(true)
+  const [userActive, setUserActive] = useState(true) //cambiar, este hace que cuando reinicie se coloque como seleccionado
   const [criteriaActive, setCriteriaActive] = useState(false)
 
   const activeStyle =
@@ -10,7 +10,7 @@ const NavHeader = (): JSX.Element => {
   const inactiveStyle = 'px-11 py-2 font-semibold text-white rounded-t w-1/2 text-center opacity-70'
 
   return (
-    <header className="bg-indigo-600 rounded-md">
+    <header className="bg-indigo-600">
       <div className="mx-auto rounded">
         <ul id="tabs" className="inline-flex w-full px-1 pt-2">
           <Link
@@ -25,7 +25,7 @@ const NavHeader = (): JSX.Element => {
           </Link>
           <Link
             className={criteriaActive ? activeStyle : inactiveStyle}
-            to={'/criteria'}
+            to={'/criterias'}
             onClick={() => {
               setUserActive(false)
               setCriteriaActive(true)

@@ -22,8 +22,10 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
+    "@material-tailwind/react": "^2.1.5",
     "@nextui-org/react": "^2.2.9",
     "@prisma/client": "5.7.0",
+    "@types/react": "^18.2.43",
     "electron-updater": "^6.1.1",
     "framer-motion": "^10.16.16",
     "react-router-dom": "^6.20.1"
@@ -33,7 +35,6 @@
     "@electron-toolkit/eslint-config-ts": "^1.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@types/node": "^18.17.5",
-    "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",
     "autoprefixer": "^10.4.16",
