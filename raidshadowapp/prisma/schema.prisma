@@ -15,8 +15,6 @@ model Users {
   username      String   @unique
   register_date DateTime @default(now())
   Points        Points[]
-  idRole        Int
-  role          Roles    @relation(fields: [idRole], references: [idRole])
 }
 
 model Points {
@@ -32,10 +30,4 @@ model Criterias {
   name         String @unique
   inGamePoints String
   actualValue  Int
-}
-
-model Roles {
-  idRole Int     @id @default(autoincrement())
-  role   String
-  Users  Users[]
 }
