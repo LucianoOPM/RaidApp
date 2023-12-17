@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState, FC } from 'react'
+import { FormEvent, useState, FC } from 'react'
 import { NewUser } from '@renderer/types/user.types'
 import { Button } from '@material-tailwind/react'
 
@@ -11,12 +11,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ registerHook }): JSX.Element => {
   const dateString = currentDate.toISOString().split('T')[0]
 
   const [dateValue, setDateValue] = useState<string>(dateString)
-  const [optSelected, setOptSelected] = useState('0')
   const [username, setUsername] = useState('')
-
-  const handleOptions = (event: ChangeEvent<HTMLSelectElement>): void => {
-    setOptSelected(event.target.value)
-  }
 
   const handleUsername = (event: FormEvent<HTMLInputElement>): void => {
     setUsername(event.currentTarget.value)
@@ -32,8 +27,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ registerHook }): JSX.Element => {
 
       const newUser: NewUser = {
         username,
-        idRole: +optSelected,
-        register_date: new Date(dateValue)
+        register_date: dateValue
       }
       const result = await window.api.createUser(newUser)
       if (result.code !== 201) {
@@ -42,7 +36,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ registerHook }): JSX.Element => {
       alert('Usuario creado correctamente')
       registerHook()
       setUsername('')
-      setOptSelected('0')
       setDateValue(dateValue)
     } catch (error) {
       alert('Error al crear el usuario')
@@ -73,24 +66,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ registerHook }): JSX.Element => {
           value={dateValue}
           onChange={handleDate}
         />
-      </div>
-      <div className="text-center">
-        <div className="mx-auto">
-          <select
-            id="rangos"
-            value={optSelected}
-            onChange={handleOptions}
-            className="px-3 py-2 bg-white border border-blue-gray-200 rounded-md shadow-sm w-1/2 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-            name="rangos"
-          >
-            <option disabled value="0">
-              Seleccionar rol
-            </option>
-            <option value="1">Lider</option>
-            <option value="2">Lugarteniente</option>
-            <option value="3">Soldado</option>
-          </select>
-        </div>
       </div>
       <div className="text-center">
         <Button className="mt-2" placeholder={''} onClick={handleRegister}>

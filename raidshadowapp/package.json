@@ -28,7 +28,9 @@
     "@types/react": "^18.2.43",
     "electron-updater": "^6.1.1",
     "framer-motion": "^10.16.16",
-    "react-router-dom": "^6.20.1"
+    "react-router-dom": "^6.20.1",
+    "sweetalert2": "^11.10.1",
+    "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",

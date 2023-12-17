@@ -2,9 +2,11 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { userService } from './service/index.service'
+import { userService, criteriaService } from './service/index.service'
 import UserController from './controller/user.controller'
+import CriteriaController from './controller/criteria.controller'
 const userController = new UserController(userService)
+const criteriaController = new CriteriaController(criteriaService)
 
 function createWindow(): void {
   // Create the browser window.
@@ -49,6 +51,8 @@ app.whenReady().then(() => {
   ipcMain.handle('createUser', userController.createUser)
   ipcMain.handle('getUsers', userController.getUsers)
   ipcMain.handle('getUser', userController.getUserById)
+  ipcMain.handle('createCriteria', criteriaController.createCriteria)
+  ipcMain.handle('getCriterias', criteriaController.getCriterias)
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

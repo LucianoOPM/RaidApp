@@ -15,7 +15,8 @@ const UserInformation = (): JSX.Element => {
         setError('No se pudo obtener el usuario')
       } else {
         if ('payload' in res) {
-          setUser(res.payload)
+          const data = JSON.parse(res.payload)
+          setUser(data)
         } else {
           setError('No se pudo obtener el usuario')
         }
