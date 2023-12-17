@@ -6,5 +6,8 @@ interface CriteriaPoint {
 }
 
 type Criterias = CriteriaPoint[]
+interface NewCriteriaPoint extends Omit<CriteriaPoint, 'id' | 'actualValue'> {
+  actualValue: string
+}
 
-export type { CriteriaPoint, Criterias }
+export type { CriteriaPoint, Criterias, NewCriteriaPoint }

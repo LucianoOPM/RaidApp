@@ -1,21 +1,19 @@
 interface User {
   idUser: number
   username: string
-  register_date: Date
-  idRole: number
+  register_date: string
 }
 
 interface UserDto {
   username: string
-  registerDate: Date
+  registerDate: string
   role: number
 }
 
 interface NewUser extends Omit<User, 'idUser'> {}
 interface UpdateUser extends Omit<User, 'idUser'> {
   username: string
-  register_date: Date
-  idRole: number
+  register_date: string
 }
 
 type Users = User[]

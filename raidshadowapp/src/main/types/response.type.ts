@@ -1,6 +1,3 @@
-import UserDto from '../dto/user.dto'
-import { User, Users } from './user.type'
-
 enum ResponseCode {
   SUCCESS = 200,
   BAD_REQUEST = 400,
@@ -15,7 +12,7 @@ interface Response {
 
 interface SuccessResponse extends Response {
   message: string
-  payload: User | Users | UserDto
+  payload: string
 }
 
 interface ErrorResponse extends Response {
