@@ -26,8 +26,15 @@ model Points {
 }
 
 model Criterias {
-  idCriteria   Int    @id @default(autoincrement())
-  name         String @unique
-  inGamePoints String
-  actualValue  Int
+  idCriteria     Int              @id @default(autoincrement())
+  name           String           @unique
+  CriteriaValues CriteriaValues[]
+}
+
+model CriteriaValues {
+  idCritValue Int       @id @default(autoincrement())
+  inGameValue String
+  realValue   Int
+  idCriteria  Int
+  criteria    Criterias @relation(fields: [idCriteria], references: [idCriteria])
 }
