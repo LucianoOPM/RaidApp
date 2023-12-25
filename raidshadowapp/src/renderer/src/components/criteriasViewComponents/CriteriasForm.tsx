@@ -9,9 +9,7 @@ interface CriteriasFormProps {
   setRegister: () => void
 }
 const initialValue: NewCriteriaPoint = {
-  name: '',
-  inGamePoints: '',
-  actualValue: ''
+  name: ''
 }
 
 const CriteriasForm: FC<CriteriasFormProps> = ({ setRegister }): JSX.Element => {
@@ -59,6 +57,7 @@ const CriteriasForm: FC<CriteriasFormProps> = ({ setRegister }): JSX.Element => 
     setCritValues(initialValue)
     if (save) {
       if ('payload' in save) {
+        console.log(save.payload)
         Swal.fire({
           title: 'Guardado',
           text: `${save.message}`

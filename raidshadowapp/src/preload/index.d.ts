@@ -2,6 +2,7 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 import { FrontendNewUser } from '../main/types/user.type'
 import { SuccessResponse, ErrorResponse } from '../main/types/response.type'
 import { NewCriteriaPoint } from '@renderer/types/criterias.types'
+import { SaveValueDb } from '@renderer/types/values.type'
 
 interface CustomApi {
   createUser: (user: FrontendNewUser) => Promise<SuccessResponse | ErrorResponse>
@@ -9,6 +10,8 @@ interface CustomApi {
   getUser: (id: string) => Promise<SuccessResponse | ErrorResponse>
   saveCriteria: (criteria: NewCriteriaPoint) => Promise<SuccessResponse | ErrorResponse>
   getCriterias: () => Promise<SuccessResponse | ErrorResponse>
+  updateValues: (id: number, values: SaveValueDb[]) => Promise<SuccessResponse | ErrorResponse>
+  getByCriteria: (id: string) => Promise<SuccessResponse | ErrorResponse>
 }
 
 declare global {

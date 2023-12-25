@@ -11,9 +11,7 @@ class CriteriaDao {
     try {
       const res = await this.criteriaDb.create({
         data: {
-          name: criteria.name,
-          inGamePoints: criteria.inGamePoints,
-          actualValue: Number(criteria.actualValue)
+          name: criteria.name
         }
       })
       return res

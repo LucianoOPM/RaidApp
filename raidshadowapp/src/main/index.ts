@@ -2,11 +2,10 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { userService, criteriaService } from './service/index.service'
-import UserController from './controller/user.controller'
-import CriteriaController from './controller/criteria.controller'
-const userController = new UserController(userService)
-const criteriaController = new CriteriaController(criteriaService)
+import { userService, criteriaService, valuesService } from './service/index.service'
+import { NewCriteria } from './types/criterias.type'
+import { FrontendNewUser } from './types/user.type'
+import { ValueCreate } from './types/values.type'
 
 function createWindow(): void {
   // Create the browser window.
@@ -48,11 +47,19 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
-  ipcMain.handle('createUser', userController.createUser)
-  ipcMain.handle('getUsers', userController.getUsers)
-  ipcMain.handle('getUser', userController.getUserById)
-  ipcMain.handle('createCriteria', criteriaController.createCriteria)
-  ipcMain.handle('getCriterias', criteriaController.getCriterias)
+  ipcMain.handle('createUser', (_event, user: FrontendNewUser) => userService.createUser(user))
+  ipcMain.handle('getUsers', () => userService.getUsers())
+  ipcMain.handle('getUser', (_event, idUser: string) => userService.getUserById(idUser))
+  ipcMain.handle('createCriteria', (_event, values: NewCriteria) => {
+    criteriaService.createCriteria(values)
+  })
+  ipcMain.handle('getCriterias', () => criteriaService.getCriterias())
+  ipcMain.handle('updateValues', (_event, id: number, values: ValueCreate[]) => {
+    return valuesService.updateValues(id, values)
+  })
+  ipcMain.handle('getByCriteria', (_event, id: string) => {
+    return valuesService.getByCriteria(id)
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

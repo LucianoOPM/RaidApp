@@ -1,4 +1,3 @@
-import { IpcMainInvokeEvent } from 'electron'
 import UserService from '../service/user.service'
 import { SuccessResponse, ErrorResponse } from '../types/response.type'
 import { FrontendNewUser, User } from '../types/user.type'
@@ -9,10 +8,7 @@ class UserController {
     this.service = service
   }
 
-  createUser = async (
-    _event: IpcMainInvokeEvent,
-    data: FrontendNewUser
-  ): Promise<SuccessResponse | ErrorResponse> => {
+  createUser = async (data: FrontendNewUser): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const user = await this.service.createUser(data)
       return {
@@ -44,10 +40,7 @@ class UserController {
     }
   }
 
-  getUserById = async (
-    _event: IpcMainInvokeEvent,
-    idUser: string
-  ): Promise<SuccessResponse | ErrorResponse> => {
+  getUserById = async (idUser: string): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const user: User = await this.service.getUser(idUser)
       return {

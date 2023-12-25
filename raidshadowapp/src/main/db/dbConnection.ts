@@ -5,6 +5,6 @@ const prisma = new PrismaClient()
 const USER = prisma.users
 const POINTS = prisma.points
 const CRITERIAS = prisma.criterias
-const ROLES = prisma.roles
+const CRVALUES = prisma.criteriaValues
 
-export { USER, POINTS, CRITERIAS, ROLES }
+export { USER, POINTS, CRITERIAS, CRVALUES }

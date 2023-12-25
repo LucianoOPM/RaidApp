@@ -1,4 +1,3 @@
-import { IpcMainInvokeEvent } from 'electron'
 import CriteriaService from '../service/criteria.service'
 import { NewCriteria } from '../types/criterias.type'
 import { ErrorResponse, SuccessResponse } from '../types/response.type'
@@ -8,10 +7,7 @@ class CriteriaController {
   constructor(service: CriteriaService) {
     this.service = service
   }
-  createCriteria = async (
-    _event: IpcMainInvokeEvent,
-    criteria: NewCriteria
-  ): Promise<SuccessResponse | ErrorResponse> => {
+  createCriteria = async (criteria: NewCriteria): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const saved = await this.service.create(criteria)
       return {
