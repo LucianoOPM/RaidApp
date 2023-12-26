@@ -7,6 +7,25 @@ class ValuesController {
   constructor(valueService: ValuesService) {
     this.valuesService = valueService
   }
+
+  createValues = async (
+    id: number,
+    values: ValueCreate[]
+  ): Promise<SuccessResponse | ErrorResponse> => {
+    try {
+      const res = await this.valuesService.create(id, values)
+      return {
+        code: 200,
+        message: 'success',
+        payload: JSON.stringify(res, null, 2)
+      }
+    } catch (error) {
+      return {
+        code: 400,
+        error: 'No se pudo crear el valor'
+      }
+    }
+  }
   public updateValues = async (
     id: number,
     values: ValueCreate[]

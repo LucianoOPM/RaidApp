@@ -47,28 +47,25 @@ const CriteriasForm: FC<CriteriasFormProps> = ({ setRegister }): JSX.Element => 
   }
 
   const handleValues = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target
-    setCritValues({ ...critValues, [name]: value })
+    const { value } = e.target
+    setCritValues({ name: value })
   }
 
   const handleSave = async (e: MouseEvent): Promise<void> => {
     e.preventDefault()
     const save = await window.api.saveCriteria(critValues)
-    setCritValues(initialValue)
-    if (save) {
-      if ('payload' in save) {
-        console.log(save.payload)
-        Swal.fire({
-          title: 'Guardado',
-          text: `${save.message}`
-        })
-        setRegister()
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: `${save.error}`
-        })
-      }
+    if ('payload' in save) {
+      setRegister()
+      setCritValues({ name: '' })
+      Swal.fire({
+        title: 'Guardado',
+        text: `${save.message}`
+      })
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: `${save.error}`
+      })
     }
   }
 

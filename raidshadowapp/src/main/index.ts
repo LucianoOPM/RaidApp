@@ -6,6 +6,7 @@ import { userService, criteriaService, valuesService } from './service/index.ser
 import { NewCriteria } from './types/criterias.type'
 import { FrontendNewUser } from './types/user.type'
 import { ValueCreate } from './types/values.type'
+import { ErrorResponse, SuccessResponse } from './types/response.type'
 
 function createWindow(): void {
   // Create the browser window.
@@ -50,9 +51,32 @@ app.whenReady().then(() => {
   ipcMain.handle('createUser', (_event, user: FrontendNewUser) => userService.createUser(user))
   ipcMain.handle('getUsers', () => userService.getUsers())
   ipcMain.handle('getUser', (_event, idUser: string) => userService.getUserById(idUser))
-  ipcMain.handle('createCriteria', (_event, values: NewCriteria) => {
-    criteriaService.createCriteria(values)
-  })
+  ipcMain.handle(
+    'createCriteria',
+    async (_event, values: NewCriteria): Promise<SuccessResponse | ErrorResponse> => {
+      try {
+        const res = await criteriaService.createCriteria(values)
+        if ('payload' in res) {
+          const criteriaId = JSON.parse(res.payload)
+          const { idCriteria } = criteriaId
+          const insertValues: ValueCreate[] = []
+          for (let i = 1; i <= 5; i++) {
+            insertValues.push({
+              inGameValue: '',
+              realValue: 0
+            })
+          }
+          await valuesService.createValues(idCriteria, insertValues)
+        }
+        return res
+      } catch (error) {
+        return {
+          code: 500,
+          error: 'No se pudieron crear los valores'
+        }
+      }
+    }
+  )
   ipcMain.handle('getCriterias', () => criteriaService.getCriterias())
   ipcMain.handle('updateValues', (_event, id: number, values: ValueCreate[]) => {
     return valuesService.updateValues(id, values)
