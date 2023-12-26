@@ -1,8 +1,9 @@
 import { Criterias } from '@renderer/types/criterias.types'
 import { FC, useEffect, useState } from 'react'
 import { Button, Card, Typography } from '@material-tailwind/react'
+import { Link } from 'react-router-dom'
 
-const tableHead = ['Criteria', 'In game points', 'Value points', 'Más detalles']
+const tableHead = ['Criterio', 'Más detalles']
 
 interface CriteriaTableProps {
   registered: boolean
@@ -52,13 +53,9 @@ const CriteriaTable: FC<CriteriaTableProps> = ({ registered }): JSX.Element => {
                       <Typography placeholder={''}>{criteria.name}</Typography>
                     </td>
                     <td className={styles}>
-                      <Typography placeholder={''}>{criteria.inGamePoints}</Typography>
-                    </td>
-                    <td className={styles}>
-                      <Typography placeholder={''}>{criteria.actualValue}</Typography>
-                    </td>
-                    <td className={styles}>
-                      <Button placeholder={''}>{'>'}</Button>
+                      <Link to={`/criteria/${criteria.idCriteria}`} state={criteria.name}>
+                        <Button placeholder={''}>{'>'}</Button>
+                      </Link>
                     </td>
                   </tr>
                 )
