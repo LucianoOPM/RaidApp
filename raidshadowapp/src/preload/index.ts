@@ -16,7 +16,7 @@ const api = {
   getUser: (idUser: string): Promise<SuccessResponse | ErrorResponse> => {
     return ipcRenderer.invoke('getUser', idUser)
   },
-  saveCriteria: (criteria: NewCriteria): Promise<SuccessResponse | ErrorResponse> => {
+  saveCriteria: (criteria: NewCriteria): Promise<void> => {
     return ipcRenderer.invoke('createCriteria', criteria)
   },
   getCriterias: (): Promise<SuccessResponse | ErrorResponse> => {

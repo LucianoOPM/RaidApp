@@ -6,7 +6,22 @@ class ValuesDao {
   constructor(valuesInstance: PrismaClient['criteriaValues']) {
     this.valuesInstance = valuesInstance
   }
+  create = async (id: number, value: ValueCreate): Promise<ValueDB> => {
+    try {
+      const newValue = await this.valuesInstance.create({
+        data: {
+          realValue: value.realValue,
+          inGameValue: value.inGameValue,
+          idCriteria: id
+        }
+      })
+      console.log(newValue)
 
+      return newValue
+    } catch (error) {
+      throw new Error('Error al crear el nuevo valor.')
+    }
+  }
   update = async (id: number, values: ValueCreate): Promise<ValueDB> => {
     try {
       return await this.valuesInstance.create({

@@ -6,7 +6,21 @@ class ValuesService {
   constructor(dao: ValuesDao) {
     this.dao = dao
   }
-
+  create = async (id: number, values: ValueCreate[]): Promise<ValueDB[]> => {
+    try {
+      const savedValues: ValueDB[] = []
+      for (const value of values) {
+        const save = await this.dao.create(id, value)
+        if (!save) {
+          throw new Error('Error al guardar el valor')
+        }
+        savedValues.push(save)
+      }
+      return savedValues
+    } catch (error) {
+      throw new Error('No se pudo crear los valores')
+    }
+  }
   update = async (idCriteria: number, values: ValueCreate[]): Promise<ValueDB[]> => {
     try {
       const savedValues: ValueDB[] = []
