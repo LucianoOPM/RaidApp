@@ -2,16 +2,16 @@ interface User {
   idUser: number
   username: string
   register_date: Date
-  idRole: number
+}
+
+interface FrontendNewUser {
+  username: string
+  register_date: string
 }
 
 interface NewUser extends Omit<User, 'idUser'> {}
-interface UpdateUser extends Omit<User, 'idUser'> {
-  username: string
-  register_date: Date
-  idRole: number
-}
+interface UpdateUser extends Omit<User, 'idUser'> {}
 
 type Users = User[]
 
-export type { User, Users, NewUser, UpdateUser }
+export type { User, Users, NewUser, UpdateUser, FrontendNewUser }

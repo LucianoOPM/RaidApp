@@ -1,6 +1,6 @@
 import UserDao from '../dao/user.dao'
 import UserDto from '../dto/user.dto'
-import { NewUser, Users } from '../types/user.type'
+import { FrontendNewUser, NewUser, User, Users } from '../types/user.type'
 
 class UserService {
   private userDao: UserDao
@@ -8,9 +8,13 @@ class UserService {
     this.userDao = userDao
   }
 
-  createUser = async (data: NewUser): Promise<UserDto> => {
+  createUser = async (data: FrontendNewUser): Promise<UserDto> => {
     try {
-      const user = await this.userDao.createUser(data)
+      const registerUser: NewUser = {
+        username: data.username,
+        register_date: new Date(data.register_date)
+      }
+      const user = await this.userDao.createUser(registerUser)
       const userDto = new UserDto(user)
       if (!userDto) {
         throw new Error('No se pudo crear al usuario')
@@ -27,6 +31,19 @@ class UserService {
       return users
     } catch (error) {
       throw new Error('No se pudo obtener los usuarios')
+    }
+  }
+
+  getUser = async (id: string): Promise<User> => {
+    try {
+      const user = await this.userDao.getById(+id)
+
+      if (!user) {
+        throw new Error('No se pudo obtener el usuario')
+      }
+      return user
+    } catch (error) {
+      throw new Error('No se pudo obtener el usuario')
     }
   }
 }

@@ -34,7 +34,6 @@ class UserDao {
       })
       return res
     } catch (error) {
-      console.log(error)
       throw new Error('Error al crear el usuario')
     }
   }

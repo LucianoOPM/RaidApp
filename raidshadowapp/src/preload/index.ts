@@ -1,11 +1,33 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { NewUser } from '../main/types/user.type'
+import { NewCriteria } from '../main/types/criterias.type'
+import { ValueCreate } from '../main/types/values.type'
+import { ErrorResponse, SuccessResponse } from '../main/types/response.type'
 
 // Custom APIs for renderer
 const api = {
-  createUser: (data: NewUser): Promise<void> => ipcRenderer.invoke('createUser', data),
-  getUsers: (): Promise<void> => ipcRenderer.invoke('getUsers')
+  createUser: (data: NewUser): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('createUser', data)
+  },
+  getUsers: (): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('getUsers')
+  },
+  getUser: (idUser: string): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('getUser', idUser)
+  },
+  saveCriteria: (criteria: NewCriteria): Promise<void> => {
+    return ipcRenderer.invoke('createCriteria', criteria)
+  },
+  getCriterias: (): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('getCriterias')
+  },
+  updateValues: (values: ValueCreate): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('updateValues', values)
+  },
+  getByCriteria: (id: string): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('getByCriteria', id)
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
