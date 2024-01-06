@@ -1,5 +1,5 @@
 import ValuesDao from '../dao/values.dao'
-import { ValueCreate, ValueDB } from '../types/values.type'
+import { ValueCreate, ValueDB, updateValue } from '../types/values.type'
 
 class ValuesService {
   private dao: ValuesDao
@@ -21,17 +21,19 @@ class ValuesService {
       throw new Error('No se pudo crear los valores')
     }
   }
-  update = async (idCriteria: number, values: ValueCreate[]): Promise<ValueDB[]> => {
+  update = async (values: updateValue[]): Promise<ValueDB[]> => {
     try {
-      const savedValues: ValueDB[] = []
+      const returnValues: ValueDB[] = []
       for (const value of values) {
-        const save = await this.dao.update(idCriteria, value)
-        if (!save) {
-          throw new Error('Error al guardar el valor')
-        }
-        savedValues.push(save)
+        returnValues.push(
+          await this.dao.update({
+            idCritValue: Number(value.idCritValue),
+            realValue: Number(value.realValue),
+            inGameValue: value.inGameValue
+          })
+        )
       }
-      return savedValues
+      return returnValues
     } catch (error) {
       throw new Error('No se pudo crear los valores')
     }

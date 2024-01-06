@@ -5,7 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { userService, criteriaService, valuesService } from './service/index.service'
 import { NewCriteria } from './types/criterias.type'
 import { FrontendNewUser } from './types/user.type'
-import { ValueCreate } from './types/values.type'
+import { ValueCreate, updateValue } from './types/values.type'
 import { ErrorResponse, SuccessResponse } from './types/response.type'
 
 function createWindow(): void {
@@ -78,8 +78,8 @@ app.whenReady().then(() => {
     }
   )
   ipcMain.handle('getCriterias', () => criteriaService.getCriterias())
-  ipcMain.handle('updateValues', (_event, id: number, values: ValueCreate[]) => {
-    return valuesService.updateValues(id, values)
+  ipcMain.handle('updateValues', (_event, values: updateValue[]) => {
+    return valuesService.updateValues(values)
   })
   ipcMain.handle('getByCriteria', (_event, id: string) => {
     return valuesService.getByCriteria(id)
