@@ -2,6 +2,7 @@ import { Criterias } from '@renderer/types/criterias.types'
 import { FC, useEffect, useState } from 'react'
 import { Button, Card, Typography } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const tableHead = ['Criterio', 'Más detalles']
 
@@ -15,13 +16,23 @@ const CriteriaTable: FC<CriteriaTableProps> = ({ registered }): JSX.Element => {
     const getData = async (): Promise<void> => {
       const res = await window.api.getCriterias()
       if ('error' in res) {
-        console.log(res.error)
+        Swal.fire({
+          title: 'Error',
+          text: res.error,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        })
       } else {
         if ('payload' in res) {
           const parsed = JSON.parse(res.payload)
           setCriterias(parsed)
         } else {
-          console.log('No se pudo obtener la data')
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudieron obtener los criterios',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+          })
         }
       }
     }
