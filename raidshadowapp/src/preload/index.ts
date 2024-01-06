@@ -22,8 +22,8 @@ const api = {
   getCriterias: (): Promise<SuccessResponse | ErrorResponse> => {
     return ipcRenderer.invoke('getCriterias')
   },
-  updateValues: (id: number, values: ValueCreate): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('updateValues', id, values)
+  updateValues: (values: ValueCreate): Promise<SuccessResponse | ErrorResponse> => {
+    return ipcRenderer.invoke('updateValues', values)
   },
   getByCriteria: (id: string): Promise<SuccessResponse | ErrorResponse> => {
     return ipcRenderer.invoke('getByCriteria', id)

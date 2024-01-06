@@ -1,6 +1,6 @@
 import ValuesService from '../service/cvalues.service'
 import { ErrorResponse, SuccessResponse } from '../types/response.type'
-import { ValueCreate } from '../types/values.type'
+import { ValueCreate, updateValue } from '../types/values.type'
 
 class ValuesController {
   private valuesService: ValuesService
@@ -26,12 +26,10 @@ class ValuesController {
       }
     }
   }
-  public updateValues = async (
-    id: number,
-    values: ValueCreate[]
-  ): Promise<SuccessResponse | ErrorResponse> => {
+  public updateValues = async (values: updateValue[]): Promise<SuccessResponse | ErrorResponse> => {
     try {
-      const res = await this.valuesService.update(id, values)
+      const res = await this.valuesService.update(values)
+
       return {
         code: 200,
         message: 'success',

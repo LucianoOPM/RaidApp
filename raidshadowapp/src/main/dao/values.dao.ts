@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { ValueCreate, ValueDB } from '../types/values.type'
+import { ValueCreate, ValueDB, acceptedUpdateValues } from '../types/values.type'
 
 class ValuesDao {
   private valuesInstance: PrismaClient['criteriaValues']
@@ -22,15 +22,16 @@ class ValuesDao {
       throw new Error('Error al crear el nuevo valor.')
     }
   }
-  update = async (id: number, values: ValueCreate): Promise<ValueDB> => {
+  update = async (value: acceptedUpdateValues): Promise<ValueDB> => {
     try {
-      return await this.valuesInstance.create({
+      const update = await this.valuesInstance.update({
+        where: { idCritValue: value.idCritValue },
         data: {
-          realValue: values.realValue,
-          inGameValue: values.inGameValue,
-          idCriteria: id
+          inGameValue: value.inGameValue,
+          realValue: value.realValue
         }
       })
+      return update
     } catch (error) {
       throw new Error('Error al crear el nuevo valor.')
     }

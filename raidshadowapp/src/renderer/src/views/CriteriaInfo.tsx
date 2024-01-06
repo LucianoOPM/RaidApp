@@ -1,20 +1,8 @@
 import { Button, Input } from '@material-tailwind/react'
-import { SaveValueDb, ValueDb } from '@renderer/types/values.type'
+import { ValueDb, inputValues } from '@renderer/types/values.type'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-
-const inputQuantity = 5
-interface inputData {
-  inGameValue: string
-  realValue: string
-}
-const inputValues: inputData[] = []
-for (let i = 1; i <= inputQuantity; i++) {
-  inputValues.push({
-    inGameValue: '',
-    realValue: ''
-  })
-}
+import Swal from 'sweetalert2'
 
 const CriteriaInfo = (): JSX.Element => {
   const { id } = useParams()
@@ -22,8 +10,7 @@ const CriteriaInfo = (): JSX.Element => {
   if (!id) {
     return <div>No hay id</div>
   }
-  const [inputData, setInputData] = useState<inputData[]>(inputValues)
-
+  const [formData, setFormData] = useState<inputValues[]>([])
   useEffect(() => {
     const loadValues = async (): Promise<void> => {
       try {
@@ -32,14 +19,15 @@ const CriteriaInfo = (): JSX.Element => {
           throw new Error(res.error)
         }
         const parsed: ValueDb[] = JSON.parse(res.payload)
-        const newInputData: inputData[] = []
+        const newInputData: inputValues[] = []
         parsed.forEach((value) => {
           newInputData.push({
+            idCritValue: value.idCritValue.toString(),
             inGameValue: value.inGameValue,
-            realValue: value.realValue.toString()
+            realValue: value.realValue === 0 && !value.inGameValue ? '' : value.realValue.toString()
           })
         })
-        setInputData(newInputData)
+        setFormData(newInputData)
       } catch (error) {
         console.error(error)
       }
@@ -47,36 +35,37 @@ const CriteriaInfo = (): JSX.Element => {
     loadValues()
   }, [])
 
-  const handleSave = async (): Promise<void> => {
-    try {
-      const saveValues: SaveValueDb[] = []
-      inputData.forEach((value) => {
-        saveValues.push({
-          inGameValue: value.inGameValue,
-          realValue: Number(value.realValue)
-        })
-      })
-
-      const valuesRes = await window.api.updateValues(Number(id), saveValues)
-      if ('error' in valuesRes) {
-        throw new Error(valuesRes.error)
-      }
-      const resPayload: ValueDb[] = JSON.parse(valuesRes.payload)
-      console.log(resPayload)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const clearValues = (): void => {
-    const newInputData: inputData[] = []
-    for (let i = 1; i <= inputQuantity; i++) {
-      newInputData.push({
+    const resetValues: inputValues[] = []
+    formData.forEach((value) => {
+      resetValues.push({
+        idCritValue: value.idCritValue,
         inGameValue: '',
         realValue: ''
       })
+    })
+    setFormData(resetValues)
+  }
+
+  const handleSave = async (): Promise<void> => {
+    try {
+      const res = await window.api.updateValues(formData)
+      if (res.code === 200) {
+        clearValues()
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos actualizados',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar los datos'
+      })
     }
-    setInputData(newInputData)
   }
 
   return (
@@ -88,7 +77,7 @@ const CriteriaInfo = (): JSX.Element => {
       </div>
       <div className="flex justify-center">
         <div className="flex flex-wrap w-1/2 justify-center items-center">
-          {inputData.map(({ inGameValue, realValue }, index) => {
+          {formData.map(({ inGameValue, realValue }, index) => {
             return (
               <div key={index} className="w-1/3 mx-2">
                 <h1 className="mt-2">{`Valor ${index + 1}`}</h1>
@@ -98,12 +87,12 @@ const CriteriaInfo = (): JSX.Element => {
                   crossOrigin={''}
                   type="text"
                   value={inGameValue}
-                  onChange={(e) => {
-                    const newInputData = [...inputData]
-                    newInputData[index].inGameValue = e.target.value
-                    setInputData(newInputData)
-                  }}
                   required
+                  onChange={(e) => {
+                    const newInputData = [...formData]
+                    newInputData[index].inGameValue = e.target.value
+                    setFormData(newInputData)
+                  }}
                 />
                 <Input
                   label={`Valor real ${index + 1}`}
@@ -111,16 +100,13 @@ const CriteriaInfo = (): JSX.Element => {
                   crossOrigin={''}
                   type="text"
                   value={realValue}
-                  onChange={(e) => {
-                    const newInputData = [...inputData]
-                    if (isNaN(Number(e.target.value))) {
-                      newInputData[index].realValue = ''
-                    } else {
-                      newInputData[index].realValue = e.target.value
-                      setInputData(newInputData)
-                    }
-                  }}
                   required
+                  onChange={(e) => {
+                    const newInputData = [...formData]
+                    const justNumbers = e.target.value.replace(/[^0-9.-]/g, '')
+                    newInputData[index].realValue = justNumbers
+                    setFormData(newInputData)
+                  }}
                 />
               </div>
             )

@@ -15,4 +15,10 @@ interface UpdateValueDb {
   realValue?: number
 }
 
-export type { ValueDb, SaveValueDb, UpdateValueDb }
+interface inputValues {
+  idCritValue: string
+  realValue: string
+  inGameValue: string
+}
+
+export type { ValueDb, SaveValueDb, UpdateValueDb, inputValues }
