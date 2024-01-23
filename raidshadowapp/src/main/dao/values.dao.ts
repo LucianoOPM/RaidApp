@@ -15,7 +15,6 @@ class ValuesDao {
           idCriteria: id
         }
       })
-      console.log(newValue)
 
       return newValue
     } catch (error) {
