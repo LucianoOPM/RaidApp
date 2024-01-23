@@ -22,7 +22,11 @@ class CriteriaDao {
 
   findAll = async (): Promise<Criteria[]> => {
     try {
-      const res = await this.criteriaDb.findMany()
+      const res = await this.criteriaDb.findMany({
+        include: {
+          CriteriaValues: true
+        }
+      })
       return res
     } catch (error) {
       throw new Error('Error en el servidor')
