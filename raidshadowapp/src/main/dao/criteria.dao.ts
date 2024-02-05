@@ -1,19 +1,15 @@
-import { PrismaClient } from '@prisma/client'
+import Criterias from '../models/Criterias.model'
 import { Criteria, NewCriteria } from '../types/criterias.type'
 
 class CriteriaDao {
-  private criteriaDb: PrismaClient['criterias']
-  constructor(criteriaDb: PrismaClient['criterias']) {
+  private criteriaDb: typeof Criterias
+  constructor(criteriaDb: typeof Criterias) {
     this.criteriaDb = criteriaDb
   }
 
   create = async (criteria: NewCriteria): Promise<Criteria> => {
     try {
-      const res = await this.criteriaDb.create({
-        data: {
-          name: criteria.name
-        }
-      })
+      const res = await this.criteriaDb.create(criteria)
       return res
     } catch (error) {
       throw new Error('No se pudo crear la nueva criteria')
@@ -22,9 +18,9 @@ class CriteriaDao {
 
   findAll = async (): Promise<Criteria[]> => {
     try {
-      const res = await this.criteriaDb.findMany({
+      const res = await this.criteriaDb.findAll({
         include: {
-          CriteriaValues: true
+          all: true
         }
       })
       return res

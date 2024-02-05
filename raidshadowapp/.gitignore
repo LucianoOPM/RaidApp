@@ -3,6 +3,5 @@ dist
 out
 *.log*
 build
-.env
-/prisma/*
-!/prisma/schema.prisma
+.env*
+prebuild/

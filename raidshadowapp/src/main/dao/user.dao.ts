@@ -1,15 +1,15 @@
-import { NewUser, UpdateUser, User, Users } from '../types/user.type'
-import { PrismaClient } from '@prisma/client'
+import User from '../models/Users.model'
+import { NewUser } from '../types/user.type'
 
 class UserDao {
-  private userModel: PrismaClient['users']
-  constructor(userModel: PrismaClient['users']) {
+  private userModel: typeof User
+  constructor(userModel: typeof User) {
     this.userModel = userModel
   }
 
-  getAll = async (): Promise<Users> => {
+  getAll = async (): Promise<User[]> => {
     try {
-      return await this.userModel.findMany()
+      return await this.userModel.findAll()
     } catch (error) {
       throw 'Nuevo error'
     }
@@ -17,11 +17,7 @@ class UserDao {
 
   getById = async (id: number): Promise<User | null> => {
     try {
-      return await this.userModel.findUnique({
-        where: {
-          idUser: id
-        }
-      })
+      return await this.userModel.findByPk(id)
     } catch (error) {
       throw 'Nuevo error'
     }
@@ -29,32 +25,37 @@ class UserDao {
 
   createUser = async (data: NewUser): Promise<User> => {
     try {
-      const res = await this.userModel.create({
-        data
-      })
+      const res = await this.userModel.create(data)
       return res
     } catch (error) {
       throw new Error('Error al crear el usuario')
     }
   }
 
-  updateUser = async (id: number, data: UpdateUser): Promise<User | null> => {
+  updateUser = async (
+    id: number,
+    data: NewUser
+  ): Promise<{ rowsAffected: number; updatedUser: User[] }> => {
     try {
-      return await this.userModel.update({
-        where: {
-          idUser: id
-        },
-        data
+      const [rowsAffected, updatedUser] = await this.userModel.update(data, {
+        where: { idUser: id },
+        returning: true
       })
+
+      return {
+        rowsAffected,
+        updatedUser
+      }
     } catch (error) {
       throw 'Nuevo error'
     }
   }
 
-  deleteUser = async (id: number): Promise<User | null> => {
+  deleteUser = async (id: number): Promise<number | null> => {
     try {
-      return await this.userModel.delete({
-        where: { idUser: id }
+      return await this.userModel.destroy({
+        where: { idUser: id },
+        force: true
       })
     } catch (error) {
       throw 'Nuevo error'

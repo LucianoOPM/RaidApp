@@ -1,6 +1,6 @@
 # raidshadowapp
 
-An Electron application with React and TypeScript
+An electron app to manage all the players from your clan
 
 ## Recommended IDE Setup
 

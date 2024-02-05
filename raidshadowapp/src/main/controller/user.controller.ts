@@ -1,6 +1,6 @@
 import UserService from '../service/user.service'
 import { SuccessResponse, ErrorResponse } from '../types/response.type'
-import { FrontendNewUser, User } from '../types/user.type'
+import { NewUser, User } from '../types/user.type'
 
 class UserController {
   private service: UserService
@@ -8,7 +8,7 @@ class UserController {
     this.service = service
   }
 
-  createUser = async (data: FrontendNewUser): Promise<SuccessResponse | ErrorResponse> => {
+  createUser = async (data: NewUser): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const user = await this.service.createUser(data)
       return {
@@ -27,6 +27,7 @@ class UserController {
   getUsers = async (): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const users = await this.service.getAll()
+
       return {
         code: 200,
         message: 'success',
