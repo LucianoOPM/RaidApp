@@ -1,25 +1,14 @@
-interface ValueDB {
+import { Optional } from 'sequelize'
+
+interface CriteriaValues {
   idCritValue: number
   inGameValue: string
   realValue: number
   idCriteria: number
 }
 
-interface ValueCreate {
-  inGameValue: string
-  realValue: number
-}
+interface NewCriteriaValue extends Optional<CriteriaValues, 'idCritValue'> {}
+interface UpdateCriteriaValue extends Optional<CriteriaValues, 'idCriteria' | 'idCritValue'> {}
+interface ToUpdateValues extends Optional<CriteriaValues, 'idCriteria'> {}
 
-interface updateValue {
-  idCritValue: string
-  inGameValue: string
-  realValue: string
-}
-
-interface acceptedUpdateValues {
-  idCritValue: number
-  inGameValue: string
-  realValue: number
-}
-
-export type { ValueDB, ValueCreate, updateValue, acceptedUpdateValues }
+export type { CriteriaValues, NewCriteriaValue, UpdateCriteriaValue, ToUpdateValues }

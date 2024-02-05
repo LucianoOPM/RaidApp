@@ -1,8 +1,10 @@
-interface Criteria {
+import { Optional } from 'sequelize'
+import { CriteriaValues } from './values.type'
+
+export interface Criteria {
   idCriteria: number
   name: string
+  criteriaValues: CriteriaValues[]
 }
 
-interface NewCriteria extends Omit<Criteria, 'idCriteria'> {}
-
-export type { Criteria, NewCriteria }
+export interface NewCriteria extends Optional<Criteria, 'idCriteria'> {}

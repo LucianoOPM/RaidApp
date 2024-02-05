@@ -2,31 +2,66 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { NewUser } from '../main/types/user.type'
 import { NewCriteria } from '../main/types/criterias.type'
-import { ValueCreate } from '../main/types/values.type'
 import { ErrorResponse, SuccessResponse } from '../main/types/response.type'
+import { ToUpdateValues } from '../main/types/values.type'
 
 // Custom APIs for renderer
 const api = {
-  createUser: (data: NewUser): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('createUser', data)
+  createUser: async (data: NewUser): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('createUser', data)
+    } catch (error) {
+      console.log(error)
+    }
   },
-  getUsers: (): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('getUsers')
+  getUsers: async (): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('getUsers')
+    } catch (error) {
+      console.log(error)
+    }
   },
-  getUser: (idUser: string): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('getUser', idUser)
+  getUser: async (idUser: string): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('getUser', idUser)
+    } catch (error) {
+      console.log(error)
+    }
   },
-  saveCriteria: (criteria: NewCriteria): Promise<void> => {
-    return ipcRenderer.invoke('createCriteria', criteria)
+  saveCriteria: async (criteria: NewCriteria): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      const valueCreated = await ipcRenderer.invoke('createCriteria', criteria)
+      const parsed = JSON.parse(valueCreated.payload)
+
+      await ipcRenderer.invoke('saveCriteriaValues', parsed.idCriteria)
+      return valueCreated
+    } catch (error) {
+      console.log(error)
+    }
   },
-  getCriterias: (): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('getCriterias')
+  getCriterias: async (): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('getCriterias')
+    } catch (error) {
+      console.log(error)
+    }
   },
-  updateValues: (values: ValueCreate): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('updateValues', values)
+  updateValues: async (
+    idCritValue: number,
+    values: ToUpdateValues[]
+  ): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('updateValues', idCritValue, values)
+    } catch (error) {
+      console.log(error)
+    }
   },
-  getByCriteria: (id: string): Promise<SuccessResponse | ErrorResponse> => {
-    return ipcRenderer.invoke('getByCriteria', id)
+  getByCriteria: async (id: string): Promise<SuccessResponse | ErrorResponse | void> => {
+    try {
+      return await ipcRenderer.invoke('getByCriteria', id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

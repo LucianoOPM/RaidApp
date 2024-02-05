@@ -1,10 +1,23 @@
-import { PrismaClient } from '@prisma/client'
+import DatabaseSingleton from './DatabaseSingleton'
+import User from '../models/Users.model'
+import Points from '../models/Points.model'
+import Criterias from '../models/Criterias.model'
+import CriteriaValues from '../models/CriteriaValues.model'
+import {dbConfig} from '../config/enviroments.config'
+import {EnvConnectionObject} from '../types/env.connection'
 
-const prisma = new PrismaClient()
+const connectionConfig: EnvConnectionObject = {
+  host: dbConfig.host,
+  database: dbConfig.database,
+  username: dbConfig.username,
+  password: dbConfig.password,
+  port: dbConfig.port,
+  dialect: dbConfig.dialect
+}
 
-const USER = prisma.users
-const POINTS = prisma.points
-const CRITERIAS = prisma.criterias
-const CRVALUES = prisma.criteriaValues
+const { getSequelizeInstance } = DatabaseSingleton.getInstance({
+  ...connectionConfig,
+  models: [User, Points, Criterias, CriteriaValues]
+})
 
-export { USER, POINTS, CRITERIAS, CRVALUES }
+export default getSequelizeInstance

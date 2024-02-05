@@ -1,6 +1,6 @@
 import ValuesService from '../service/cvalues.service'
 import { ErrorResponse, SuccessResponse } from '../types/response.type'
-import { ValueCreate, updateValue } from '../types/values.type'
+import { NewCriteriaValue, ToUpdateValues } from '../types/values.type'
 
 class ValuesController {
   private valuesService: ValuesService
@@ -8,16 +8,23 @@ class ValuesController {
     this.valuesService = valueService
   }
 
-  createValues = async (
-    id: number,
-    values: ValueCreate[]
-  ): Promise<SuccessResponse | ErrorResponse> => {
+  createValues = async (id: number): Promise<SuccessResponse | ErrorResponse> => {
     try {
-      const res = await this.valuesService.create(id, values)
+      const values: NewCriteriaValue[] = [
+        { inGameValue: '0', realValue: 0, idCriteria: id },
+        { inGameValue: '0', realValue: 0, idCriteria: id },
+        { inGameValue: '0', realValue: 0, idCriteria: id },
+        { inGameValue: '0', realValue: 0, idCriteria: id },
+        { inGameValue: '0', realValue: 0, idCriteria: id }
+      ]
+      const res = await this.valuesService.create(values)
+      const returning = res.map(({ idCritValue, idCriteria, realValue, inGameValue }) => {
+        return { idCritValue, idCriteria, realValue, inGameValue }
+      })
       return {
         code: 200,
         message: 'success',
-        payload: JSON.stringify(res, null, 2)
+        payload: JSON.stringify(returning, null, 2)
       }
     } catch (error) {
       return {
@@ -26,7 +33,9 @@ class ValuesController {
       }
     }
   }
-  public updateValues = async (values: updateValue[]): Promise<SuccessResponse | ErrorResponse> => {
+  public updateValues = async (
+    values: ToUpdateValues[]
+  ): Promise<SuccessResponse | ErrorResponse> => {
     try {
       const res = await this.valuesService.update(values)
 

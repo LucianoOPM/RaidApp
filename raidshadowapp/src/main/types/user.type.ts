@@ -1,17 +1,11 @@
-interface User {
+import { Optional } from 'sequelize'
+import Points from '../models/Points.model'
+
+export interface User {
   idUser: number
   username: string
   register_date: Date
+  points: Points[]
 }
 
-interface FrontendNewUser {
-  username: string
-  register_date: string
-}
-
-interface NewUser extends Omit<User, 'idUser'> {}
-interface UpdateUser extends Omit<User, 'idUser'> {}
-
-type Users = User[]
-
-export type { User, Users, NewUser, UpdateUser, FrontendNewUser }
+export interface NewUser extends Optional<User, 'idUser'> {}
